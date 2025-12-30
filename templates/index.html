@@ -1,16 +1,28 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="hero">
-    <h1>Witaj w Sandi's Book Club 📖</h1>
-    <p>Najbliższe spotkania i lektury</p>
+<div style="text-align: center; margin-bottom: 40px;">
+    <h1 style="color: #af8c4b; font-size: 3em;">Sandi's Book Club</h1>
+    <p style="font-style: italic;">Kliknij w książkę, aby przeczytać jej opis...</p>
 </div>
-<h2 style="color:#af8c4b">Omawiane Teraz</h2>
+
+<h2 style="border-left: 5px solid #af8c4b; padding-left: 15px;">📚 Omawiane teraz</h2>
 <div class="book-grid">
-    {% for book in discussed %}
-    <div class="card">
-        <img src="{{ book.img }}">
-        <h3>{{ book.title }}</h3>
-        <p><strong>{{ book.author }}</strong></p>
+    {% for b in discussed %}
+    <div class="card" onclick="openModal('{{ b.title }}', '{{ b.author }}', '{{ b.desc }}', '{{ b.img }}')">
+        <img src="{{ b.img }}">
+        <h3>{{ b.title }}</h3>
+        <p><strong>{{ b.author }}</strong></p>
+    </div>
+    {% endfor %}
+</div>
+
+<h2 style="border-left: 5px solid #ffd87e; padding-left: 15px; margin-top: 50px;">⏳ Nadchodzące lektury</h2>
+<div class="book-grid">
+    {% for b in upcoming %}
+    <div class="card" style="border-bottom-color: #ffd87e;" onclick="openModal('{{ b.title }}', '{{ b.author }}', '{{ b.desc }}', '{{ b.img }}')">
+        <img src="{{ b.img }}">
+        <h3>{{ b.title }}</h3>
+        <p><strong>{{ b.author }}</strong></p>
     </div>
     {% endfor %}
 </div>
