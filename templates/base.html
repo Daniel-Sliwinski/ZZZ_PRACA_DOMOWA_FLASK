@@ -1,119 +1,263 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>Sandi's Book Club</title>
-    <style>
-        body { font-family: 'Calibri', sans-serif; background-color: #fffbf2; color: #5d4a27; margin: 0; padding-bottom: 60px; }
-        nav { background-color: #af8c4b; padding: 15px; display: flex; justify-content: space-between; align-items: center; color: white; position: sticky; top: 0; z-index: 1000; }
-        nav a { color: white; margin: 0 15px; text-decoration: none; font-weight: bold; }
-        .container { max-width: 1100px; margin: auto; padding: 20px; }
-        
-        /* Karty książek */
-        .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        .card { background: white; padding: 15px; border-radius: 10px; border-bottom: 5px solid #af8c4b; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .card:hover { transform: scale(1.02); background: #fef9e7; }
-        .card img { width: 100%; border-radius: 5px; height: 350px; object-fit: cover; }
-        
-        /* Modal (Pop-up) */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); align-items: center; justify-content: center; }
-        .modal-content { background: #fff; padding: 30px; border-radius: 15px; max-width: 600px; width: 90%; position: relative; max-height: 80vh; overflow-y: auto; }
-        .close { position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer; color: #af8c4b; }
+<meta charset="UTF-8">
+<title>Sandi's Book Club</title>
 
-       /* Styl dla nieruchomej stopki */
-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #303f4a; /* Ciemniejszy kolor dla kontrastu */
-    color: #faca83; /* Twój pastelowy kolor */
-    text-align: center;
-    padding: 15px 0;
-    font-size: 0.9em;
-    border-top: 3px solid #af8c4b; /* Złota linia na górze stopki */
+<style>
+:root {
+    --gold: #af8c4b;
+}
+
+body {
+    font-family: Georgia, sans-serif;
+    background-color: #fffbf2;
+    color: #5d4a27;
+    margin: 0;
+    padding-bottom: 70px; /* miejsce na stopkę */
+}
+
+/* NAV */
+nav {
+    background: white;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center; /* Centrowanie w poziomie */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
     z-index: 1000;
 }
 
-/* Ważne: dodajemy margines na dole body, żeby treść strony nie "wchodziła" pod stopkę */
-body {
-    padding-bottom: 70px; 
+.nav-links {
+    display: flex;
+    gap: 40px; /* Duży odstęp między opcjami dla minimalizmu */
+    align-items: center;
 }
 
-/* Styl dla ikon w stopce */
-.footer-links a {
-    color: #ffd87e;
+.nav-links a {
     text-decoration: none;
-    margin: 0 10px;
-}
-.footer-links a:hover {
-    text-decoration: underline;
+    color: #5d4a27; /* Twój ciemny brąz */
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 1px;
+    transition: 0.3s;
 }
 
-/* Dodaj padding na dole body, żeby stopka nie zasłaniała treści */
-body {
-    padding-bottom: 70px;
+.nav-links a:hover {
+    color: #af8c4b; /* Złoty kolor przy najechaniu */
 }
-    </style>
+
+/* Specjalne wyróżnienie dla Dashboardu, żeby rzucał się w oczy */
+.special-link {
+    color: #af8c4b !important;
+    border-bottom: 2px solid #af8c4b;
+    padding-bottom: 5px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* KARTY */
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    border-bottom: 5px solid var(--gold);
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: scale(1.02);
+    background: #fef9e7;
+}
+
+.card img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* MODAL */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 30px;
+    cursor: pointer;
+    color: var(--gold);
+}
+/* STOPKA */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #677b89;
+    color: #faca83;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 0.9em;
+    border-top: 3px solid var(--gold);
+}
+</style>
 </head>
 <body>
-    <nav>
-    <h2 style="margin:0">Sandi's Book Club</h2>
-    <div>
+
+<nav>
+    <div class="nav-links">
         <a href="/">Główna</a>
-        <a href="/about">O mnie</a>
-        <a href="/contact">Kontakt</a> {% if session.get('user') %}
+        <a href="/about-me">O mnie</a>
         <a href="/contact">Kontakt</a>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/logout">Wyloguj</a>
-        {% else %}
-            <a href="/login">Login</a>
-        {% endif %}
+        
+    {% if session.get('user') %}
+        <a href="/dashboard" class="special-link">Panel</a>
+        <span style="font-size: 0.8em; color: var(--gold); margin-left: 10px;">
+            Cześć, <strong>{{ session['user'] }}</strong>!
+         </span>
+        <a href="/logout" style="font-size: 0.8em; opacity: 0.7; text-decoration: none;">(Wyloguj)</a>
+    {% else %}
+        <a href="/login">Logowanie</a>
+    {% endif %}
     </div>
 </nav>
 
-    <div class="container">
-        {% block content %}{% endblock %}
-    </div>
+{% if session.get('user') %}
+<div style="background: #fdf2d5; text-align: center; padding: 10px; font-size: 1em; border-bottom: 2px solid #faca83; border-top: 2px solid #faca83;">
+    Jesteś zalogowany 
+</div>
+{% endif %}
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
 
 <div id="bookModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
-        <div style="display: flex; gap: 20px; align-items: start;">
-            <img id="modalImg" src="" style="width: 180px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+
+        <div style="display:flex; gap:20px;">
+            <img id="modalImg" style="width:180px; border-radius:10px; object-fit: cover;">
             <div>
-                <h2 id="modalTitle" style="color:#af8c4b; margin:0 0 10px 0;"></h2>
-                <p><strong id="modalAuthor" style="color: #5d4a27;"></strong></p>
-                <div id="modalDesc" style="line-height: 1.6; text-align: justify; font-size: 0.95em; color: #333;"></div>
+                <h2 id="modalTitle" style="color:var(--gold); margin-top: 0;"></h2>
+                <strong id="modalAuthor"></strong>
+                
+                <div id="modalDesc" style="margin-top: 15px; line-height: 1.6;"></div>
+
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+                <h4 style="color: var(--gold); margin-bottom: 10px;">Opinie klubowiczów:</h4>
+                <div id="modalComments" style="font-size: 0.9em; line-height: 1.4;"></div>
+                <div id="modalAction" style="margin-top: 20px; padding-top: 15px; border-top: 1px dashed #ddd; text-align: center;"></div>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    function openModal(title, author, desc, img) {
-        document.getElementById('modalTitle').textContent = title;
-        document.getElementById('modalAuthor').textContent = author;
-        document.getElementById('modalDesc').textContent = desc;
-        document.getElementById('modalImg').src = img;
-        document.getElementById('bookModal').style.display = "flex";
-        document.body.style.overflow = "hidden"; // Blokuje przewijanie tła
-    }
-
-    function closeModal() {
-        document.getElementById('bookModal').style.display = "none";
-        document.body.style.overflow = "auto"; // Przywraca przewijanie
-    }
-
-    window.onclick = function(event) {
-        if (event.target == document.getElementById('bookModal')) closeModal();
-    }
-</script>
 <footer>
-    <div>
-        <strong>Sandi's Book Club</strong> &copy; 2025 | Wszystkie prawa zastrzeżone.
-        <span class="footer-links">
-    </div>
+    <strong>Sandi's Book Club</strong> © 2025
 </footer>
-</body>
-</html>
+
+<script>
+function openModal(title, author, desc, img) {
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalAuthor').textContent = author;
+    document.getElementById('modalDesc').innerHTML = desc;
+    document.getElementById('modalImg').src = img;
+
+    const commentsDiv = document.getElementById('modalComments');
+    const allReviews = {{ reviews | tojson | safe if reviews else '[]' }};
+    const filtered = allReviews.filter(r => r.book === title);
+    
+    commentsDiv.innerHTML = filtered.length > 0 
+        ? filtered.map(r => `<div style="background:#f9f9f9; padding:10px; border-radius:8px; margin-bottom:8px; border-left:3px solid var(--gold); text-align:left;"><strong>${r.user}:</strong><p style="margin:5px 0 0 0;">${r.text}</p></div>`).join('')
+        : '<p style="color:#999; font-style:italic;">Brak opinii o tej książce.</p>';
+
+    const actionDiv = document.getElementById('modalAction');
+    
+    {% if session.get('user') %}
+        actionDiv.innerHTML = `
+            <a href="/dashboard" style="text-decoration:none; background:var(--gold); color:white; padding:10px 20px; border-radius:5px; font-weight:bold; font-size:0.8em; display: inline-block;">
+                + DODAJ RECENZJĘ W PANELU
+            </a>`;
+    {% else %}
+        actionDiv.innerHTML = `
+            <p style="font-size:0.85em; color:#5d4a27;">
+                Chcesz dodać opinię? 
+                <a href="/login" style="color:var(--gold); font-weight:bold; text-decoration:none;">Zaloguj się</a>
+            </p>`;
+    {% endif %}
+
+    document.getElementById('bookModal').style.display = "flex";
+    document.body.style.overflow = "hidden";
+}
+
+// TA FUNKCJA BYŁA POTRZEBNA:
+function closeModal() {
+    document.getElementById('bookModal').style.display = "none";
+    document.body.style.overflow = "auto";
+}
+
+window.onclick = function(event) {
+    const modal = document.getElementById('bookModal');
+    if (event.target === modal) closeModal();
+};
+</script>
+</body><script>
+// USTAWIENIE DATY SPOTKANIA (Rok, Miesiąc-1, Dzień, Godzina, Minuta)
+// Uwaga: Miesiące liczymy od 0 (Styczeń = 0, Luty = 1 itd.)
+const meetingDate = new Date(2026, 0, 15, 19, 0, 0).getTime(); 
+
+const countdown = setInterval(function() {
+    const now = new Date().getTime();
+    const distance = meetingDate - now;
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("days").innerText = days.toString().padStart(2, '0');
+    document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+    document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+    document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+
+    if (distance < 0) {
+        clearInterval(countdown);
+        document.getElementById("countdown-section").innerHTML = "<h2 style='color:var(--gold); font-family:Georgia;'>Spotkanie właśnie trwa! 🕯️</h2>";
+    }
+}, 1000);
+</script>

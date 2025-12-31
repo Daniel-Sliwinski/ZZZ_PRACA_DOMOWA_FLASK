@@ -6,8 +6,12 @@ app.secret_key = "sandi_secret_key_2025"
 
 # BAZA UŻYTKOWNIKÓW
 users = {
-    "admin": {"name": "Sandra", "pass": "admin123"},
+    "admin": {"name": "admin", "pass": "admin123"},
+    "Anna": {"name": "Anna", "pass": "user123"},
+    "Maria": {"name": "Maria", "pass": "user123"},
 }
+reviews = []
+all_messages = []
 
 # KSIĄŻKI OMAWIANE
 books_discussed = [
@@ -69,11 +73,36 @@ reviews = []
 
 @app.route('/')
 def index():
-    return render_template('index.html', discussed=books_discussed, upcoming=books_upcoming)
+    return render_template(
+        'index.html',
+        discussed=books_discussed,
+        upcoming=books_upcoming,
+        reviews=reviews,
+        users=users
+    )
 
-@app.route('/about')
+@app.route('/about-me') # <--- TO MUSI BYĆ TAKIE SAME JAK W <A HREF>
 def about():
-    return render_template('about_me.html')
+    return render_template('about_me.html') # <--- PLIK MUSI SIĘ TAK NAZYWAĆ
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        message = request.form.get('message')
+
+        # Zapisujemy wiadomość jako słownik do listy
+        all_messages.append({
+            "name": name, 
+            "email": email, 
+            "text": message
+        })
+
+        print(f"Odebrano wiadomość od {name}!") # Zostawiamy dla Twojej kontroli w terminalu
+        return render_template('contact.html', success="Wiadomość została wysłana do administratora!")
+    
+    return render_template('contact.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -85,31 +114,44 @@ def register():
             return redirect(url_for('login'))
     return render_template('register.html')
 
-@app.route('/contact', methods=['GET', 'POST'])
-def contact():
-    if request.method == 'POST':
-        # Tutaj Flask odbiera dane z Twojego formularza
-        return render_template('contact.html', success=True)
-    return render_template('contact.html')
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
+        
+        # Sprawdzamy czy użytkownik jest w bazie (słownik users)
         if username in users and users[username]['pass'] == password:
             session['user'] = username
+            # PO ZALOGOWANIU MUSI BYĆ PRZEKIEROWANIE (302), A NIE 200
             return redirect(url_for('dashboard'))
+        else:
+            # Jeśli błędne dane, odświeżamy stronę logowania z błędem
+            return render_template('login.html', error="Błędny login lub hasło")
+            
     return render_template('login.html')
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     if 'user' not in session:
         return redirect(url_for('login'))
+    
     if request.method == 'POST':
-        rev = {"user": session['user'], "book": request.form.get('book'), "text": request.form.get('review')}
+        # Tutaj zbieramy dane z formularza recenzji
+        rev = {
+            "user": session['user'], 
+            "book": request.form.get('book'), 
+            "rating": request.form.get('rating'),
+            "text": request.form.get('review')
+        }
         reviews.append(rev)
-    return render_template('dashboard.html', users=users, reviews=reviews, books=books_discussed + books_upcoming)
+        
+    # DODAJ TUTAJ: all_messages=all_messages
+    return render_template('dashboard.html', 
+                           users=users, 
+                           reviews=reviews, 
+                           books=books_discussed, 
+                           all_messages=all_messages)
 
 @app.route('/logout')
 def logout():
