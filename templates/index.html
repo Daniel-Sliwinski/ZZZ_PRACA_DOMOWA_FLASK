@@ -1,30 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
+
 <div style="text-align: center; margin-bottom: 40px;">
     <h1 style="color: #af8c4b; font-size: 3em;">Sandi's Book Club</h1>
     <p>
         Kameralny klub czytelniczy dla tych, którzy szukają
         sensu, emocji i rozmów bez pośpiechu.
     </p>
-</section>
+</div>
+
+<section style="margin: 50px 0; text-align: center;">
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+        <div style="background: #fffbf2; border: 1px solid #f2e6c9; border-radius: 15px; padding: 20px;">
+            <h2 style="color: #af8c4b; font-size: 2.5em; margin: 0;">{{ discussed|length + upcoming|length }}</h2>
+            <p style="font-family: 'Georgia', serif; color: #5d4a27; margin: 5px 0;">Książek w bibliotece</p>
+        </div>
+        <div style="background: #fffbf2; border: 1px solid #f2e6c9; border-radius: 15px; padding: 20px;">
+            <h2 style="color: #af8c4b; font-size: 2.5em; margin: 0;">{{ users|length }}</h2>
+            <p style="font-family: 'Georgia', serif; color: #5d4a27; margin: 5px 0;">Klubowiczów</p>
+        </div>
+        <div style="background: #fffbf2; border: 1px solid #f2e6c9; border-radius: 15px; padding: 20px;">
+            <h2 style="color: #af8c4b; font-size: 2.5em; margin: 0;">{{ reviews|length }}</h2>
+            <p style="font-family: 'Georgia', serif; color: #5d4a27; margin: 5px 0;">Opinii</p>
+        </div>
     </div>
+</section>
 
 <div id="countdown-section" style="text-align: center; margin: 40px 0; padding: 20px; background: #fcf6e8; border-radius: 15px; border: 1px solid #f2e6c9;">
-    <h3 style="font-family: 'Georgia', serif; color: var(--gold); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9em;">
+    <h3 style="font-family: 'Georgia', serif; color: #af8c4b; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9em;">
         Następne spotkanie klubu za:
     </h3>
     <div id="timer" style="font-family: 'Georgia', serif; color: #5d4a27; font-size: 3em; font-weight: bold; display: flex; justify-content: center; gap: 20px;">
-        <div><span id="days">00</span><small style="display:block; font-size: 0.3em; text-transform: uppercase; color: var(--gold);">Dni</small></div>
-        <div><span id="hours">00</span><small style="display:block; font-size: 0.3em; text-transform: uppercase; color: var(--gold);">Godz</small></div>
-        <div><span id="minutes">00</span><small style="display:block; font-size: 0.3em; text-transform: uppercase; color: var(--gold);">Min</small></div>
-        <div><span id="seconds">00</span><small style="display:block; font-size: 0.3em; text-transform: uppercase; color: var(--gold);">Sek</small></div>
+        <div><span id="days">00</span><small style="display:block; font-size: 0.3em; text-transform: uppercase; color: #af8c4b;">Dni</small></div>
+        <div><span id="hours">00</span><small style="display:block; font-size: 0.3em; text-transform: uppercase; color: #af8c4b;">Godz</small></div>
+        <div><span id="minutes">00</span><small style="display:block; font-size: 0.3em; text-transform: uppercase; color: #af8c4b;">Min</small></div>
+        <div><span id="seconds">00</span><small style="display:block; font-size: 0.3em; text-transform: uppercase; color: #af8c4b;">Sek</small></div>
     </div>
 </div>
 
 <h2 style="border-left: 5px solid #af8c4b; padding-left: 15px;">📚 Omawiane teraz</h2>
 <div class="book-grid">
     {% for b in discussed %}
-    <div class="card" onclick="openModal('{{ b.title }}', '{{ b.author }}', '{{ b.desc }}', '{{ b.img }}')">
+    <div class="card" onclick="openModal('{{ b.title|replace("'", "\\'") }}', '{{ b.author|replace("'", "\\'") }}', '{{ b.desc|replace("'", "\\'") }}', '{{ b.img }}')">
         <img src="{{ b.img }}">
         <h3>{{ b.title }}</h3>
         <p><strong>{{ b.author }}</strong></p>
@@ -35,11 +52,12 @@
 <h2 style="border-left: 5px solid #ffd87e; padding-left: 15px; margin-top: 50px;">⏳ Nadchodzące lektury</h2>
 <div class="book-grid">
     {% for b in upcoming %}
-    <div class="card" style="border-bottom-color: #ffd87e;" onclick="openModal('{{ b.title }}', '{{ b.author }}', '{{ b.desc }}', '{{ b.img }}')">
+    <div class="card" style="border-bottom-color: #ffd87e;" onclick="openModal('{{ b.title|replace("'", "\\'") }}', '{{ b.author|replace("'", "\\'") }}', '{{ b.desc|replace("'", "\\'") }}', '{{ b.img }}')">
         <img src="{{ b.img }}">
         <h3>{{ b.title }}</h3>
         <p><strong>{{ b.author }}</strong></p>
     </div>
     {% endfor %}
 </div>
+
 {% endblock %}
