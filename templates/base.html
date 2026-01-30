@@ -5,96 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sandi's Book Club</title>
     <style>
-        :root { 
-            --gold: #af8c4b; 
-            --dark: #5d4a27; 
+        :root {
+            --gold: #af8c4b;
+            --dark: #5d4a27;
             --bg-cream: #fffbf2;
             --white: #ffffff;
         }
 
-        body { 
-            font-family: 'Georgia', serif; 
-            background-color: var(--bg-cream); 
-            color: var(--dark); 
-            margin: 0; 
+        body {
+            font-family: 'Georgia', serif;
+            background-color: var(--bg-cream);
+            color: var(--dark);
+            margin: 0;
             padding-bottom: 100px;
             line-height: 1.6;
         }
 
-        nav { 
-            background: var(--white); 
-            padding: 40px 0; 
-            display: flex; 
-            justify-content: center; 
+        nav {
+            background: var(--white);
+            padding: 40px 0;
+            display: flex;
+            justify-content: center;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
-            position: fixed; 
-            top: 0; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: fixed;
+            top: 0;
             left: 0;
             width: 100%;
-            z-index: 2000; 
-            border-top: 3px solid var(--gold); 
-            border-bottom: 3px solid var(--gold); 
+            z-index: 2000;
+            border-top: 3px solid var(--gold);
+            border-bottom: 3px solid var(--gold);
         }
-        
+
         .nav-links { display: flex; gap: 40px; align-items: center; }
-        .nav-links a { 
-            text-decoration: none; 
-            color: var(--dark); 
-            font-weight: bold; 
-            text-transform: uppercase; 
-            font-size: 0.9em; 
-            letter-spacing: 1px; 
-            transition: 0.3s; 
-            padding-bottom: 5px; 
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            padding-bottom: 5px;
         }
         .nav-links a:hover { color: var(--gold); }
         .special-link { color: var(--gold) !important; border-bottom: 2px solid var(--gold); }
 
-        .container { 
-            max-width: 1400px; 
+        .container {
+            max-width: 1400px;
             margin: 103px auto 0 auto; /* Idealnie pod fixed nav */
-            padding: 20px 40px; 
+            padding: 20px 40px;
             box-sizing: border-box;
         }
 
-        .modal { 
-            display: none; 
-            position: fixed; 
-            inset: 0; 
-            background: rgba(0,0,0,0.7); 
-            z-index: 3000; 
-            align-items: center; 
-            justify-content: center; 
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
         }
-        .modal-content { 
-            background: var(--white); 
-            padding: 30px; 
-            border-radius: 15px; 
-            max-width: 700px; 
-            width: 90%; 
-            max-height: 85vh; 
-            overflow-y: auto; 
-            position: relative; 
+        .modal-content {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
         }
-        .close { 
-            position: absolute; 
-            right: 20px; 
-            top: 15px; 
-            font-size: 30px; 
-            cursor: pointer; 
-            color: var(--gold); 
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 30px;
+            cursor: pointer;
+            color: var(--gold);
         }
 
-        footer { 
-            position: fixed; 
-            bottom: 0; 
-            width: 100%; 
-            background-color: #677b89; 
-            color: #faca83; 
-            text-align: center; 
-            padding: 15px 0; 
-            border-top: 3px solid var(--gold); 
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #677b89;
+            color: #faca83;
+            text-align: center;
+            padding: 15px 0;
+            border-top: 3px solid var(--gold);
             z-index: 2000;
         }
     </style>
@@ -139,14 +139,20 @@
 
 <script>
 function openModal(title, author, desc, img) {
-    document.getElementById('modalTitle').textContent = title;
-    document.getElementById('modalAuthor').textContent = author;
-    document.getElementById('modalDesc').innerHTML = desc;
-    document.getElementById('modalImg').src = img;
-    document.getElementById('bookModal').style.display = "flex";
+    document.getElementById('modal-title').innerText = title;
+    document.getElementById('modal-author').innerText = author;
+    document.getElementById('modal-desc').innerText = desc;
+    document.getElementById('modal-img').src = img;
+    document.getElementById('bookModal').style.display = "block";
 }
-function closeModal() { document.getElementById('bookModal').style.display = "none"; }
-window.onclick = function(event) { if (event.target == document.getElementById('bookModal')) closeModal(); }
+
+function closeModal() {
+    document.getElementById('bookModal').style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == document.getElementById('bookModal')) closeModal();
+}
 </script>
 </body>
 </html>

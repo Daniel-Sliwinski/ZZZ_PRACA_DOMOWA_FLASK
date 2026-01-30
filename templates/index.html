@@ -49,7 +49,7 @@
         cursor: pointer;
         display: flex;
         flex-direction: column;
-        align-items: center; 
+        align-items: center;
         text-align: center;
     }
 
@@ -60,7 +60,7 @@
         height: auto;
         aspect-ratio: 2/3;
         object-fit: cover;
-        border-radius: 15px; 
+        border-radius: 15px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
@@ -109,11 +109,11 @@
         padding: 20px;
         border-radius: 20px;
         width: 95%;
-        max-width: 450px; 
+        max-width: 450px;
         max-height: 85vh;
         overflow-y: auto;
         font-family: 'Georgia', serif;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.2); 
+        box-shadow: 0 15px 40px rgba(0,0,0,0.2);
         border: 1px solid #f2e6c9;
     }
 
@@ -136,7 +136,7 @@
 
 <div style="text-align: center; margin-bottom: 50px; margin-top: 50px; overflow: hidden;">
     <div style="max-width: 100%; margin: 0 auto;">
-        <img src="{{ url_for('static', filename='tlo.png') }}" alt="Sandi's Book Club" 
+        <img src="{{ url_for('static', filename='tlo.png') }}" alt="Sandi's Book Club"
              style="width: 100%; max-height: 500px; object-fit: cover;">
     </div>
     <p style="margin-top: 25px; font-family: 'Georgia', serif; font-style: italic; color: #5d4a27; font-size: 1.1em; max-width: 700px; margin-left: auto; margin-right: auto;">
@@ -196,39 +196,12 @@
 <div id="bookModal" class="modal-overlay">
     <div class="modal-box">
         <span class="close-btn" onclick="closeModal()">&times;</span>
-        
+
         <div style="text-align: center; margin-bottom: 20px;">
             <img id="modal-img" src="" style="width: 140px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
             <h2 id="modal-title" style="margin: 0; color: #5d4a27; font-family: 'Georgia', serif;"></h2>
             <h4 id="modal-author" style="margin: 5px 0; color: #af8c4b; font-weight: normal; font-style: italic;"></h4>
             <p id="modal-desc" style="font-size: 0.9em; line-height: 1.5; color: #444; margin-top: 15px; text-align: justify; padding: 0 10px;"></p>
-        </div>
-
-        <hr style="border: 0; border-top: 1px solid #f2e6c9; margin: 20px 0;">
-
-        <div style="padding: 0 10px;">
-            <h3 style="color: #5d4a27; font-size: 1.1em; margin-bottom: 15px; font-family: 'Georgia', serif;">Komentarze klubowiczów</h3>
-            
-            <div id="modal-comments" style="max-height: 200px; overflow-y: auto; margin-bottom: 20px;">
-                </div>
-
-            {% if session.get('user_id') %}
-                <form id="modal-comment-form" method="POST" action="">
-                    <textarea name="comment_text" placeholder="Napisz swoją opinię..." 
-                              style="width: 100%; height: 80px; padding: 12px; border-radius: 12px; border: 1px solid #f2e6c9; font-family: 'Georgia', serif; resize: none;" required></textarea>
-                    <button type="submit" id="submit-comment-btn" 
-                            style="background: #af8c4b; color: #fff; border: none; padding: 12px; border-radius: 25px; cursor: pointer; margin-top: 10px; width: 100%; font-weight: bold; font-family: 'Georgia', serif;">
-                        Opublikuj komentarz
-                    </button>
-                </form>
-            {% else %}
-                <div style="background: #fdfaf0; padding: 20px; border-radius: 15px; text-align: center; border: 1px dashed #af8c4b;">
-                    <p style="font-size: 0.95em; color: #5d4a27; margin: 0; font-family: 'Georgia', serif;">
-                        Chcesz przeczytać wszystkie opinie lub dodać własną? <br>
-                        <a href="{{ url_for('login') }}" style="color: #af8c4b; font-weight: bold; text-decoration: none;">Zaloguj się do klubu</a>
-                    </p>
-                </div>
-            {% endif %}
         </div>
     </div>
 </div>
@@ -241,14 +214,14 @@
     document.getElementById('modal-author').innerText = author;
     document.getElementById('modal-desc').innerText = desc;
     document.getElementById('modal-img').src = img;
-    
+
     const commDiv = document.getElementById('modal-comments');
     const form = document.getElementById('modal-comment-form');
-    
+
     // Zabezpieczenie: czyścimy akcję formularza na start
-    if(form) form.action = "#"; 
+    if(form) form.action = "#";
     commDiv.innerHTML = '<p style="font-size: 0.8em; color: #999;">Ładowanie rozmów...</p>';
-    
+
     document.getElementById('bookModal').style.display = "block";
 
     // Używamy encodeURIComponent, żeby obsłużyć polskie znaki i apostrofy
@@ -260,10 +233,10 @@
                     // Ustawiamy poprawny adres wysyłki komentarza
                     form.action = "/add-comment/" + data.id;
                 }
-                
+
                 commDiv.innerHTML = data.comments.length ? data.comments.map(c => `
                     <div class="comment-bubble">
-                        <strong style="color: #5d4a27;">${c.user}</strong> 
+                        <strong style="color: #5d4a27;">${c.user}</strong>
                         <small style="color: #999; float: right;">${c.date}</small>
                         <p style="margin: 5px 0 0 0; color: #444;">${c.text}</p>
                     </div>

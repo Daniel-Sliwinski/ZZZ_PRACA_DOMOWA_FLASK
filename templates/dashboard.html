@@ -163,7 +163,7 @@
 
         {# DODAJ NOWĄ RECENZJĘ #}
         <div class="custom-card">
-            <h3 class="card-title">Dodaj nową opinię </h3>
+            <h3 class="card-title">Dodaj nową recenzję </h3>
             <form method="POST" style="display: flex; flex-direction: column; gap: 20px;">
                 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
                     <div>
@@ -190,9 +190,9 @@
             </form>
         </div>
 
-        {# OSTATNIE KOMENTARZE - Z OPCJĄ USUWANIA #}
+        {# RECENZJE UŻYTKOWNIKÓW #}
         <div class="custom-card">
-            <h3 class="card-title">Ostatnie komentarze </h3>
+            <h3 class="card-title">Recenzje Użytkowników </h3>
             <div style="display: flex; flex-direction: column; gap: 20px;">
                 {% for r in reviews %}
                     <div class="inner-entry" style="margin-bottom: 0; position: relative;">
@@ -211,7 +211,7 @@
                             "{{ r.text }}"
                         </p>
 
-                        {# PRZYCISK USUWANIA KOMENTARZA #}
+                        {# PRZYCISK USUWANIA RECENZJI #}
                         {% if r.user_id == session['user_id'] or session['is_admin'] %}
                         <div style="text-align: right; margin-top: 10px;">
                             {# ZMIANA NAZWY FUNKCJI NA process_delete_review #}
@@ -222,7 +222,7 @@
                         {% endif %}
                     </div>
                 {% else %}
-                    <p style="text-align: center; color: #999; font-style: italic;">Brak komentarzy do wyświetlenia.</p>
+                    <p style="text-align: center; color: #999; font-style: italic;">Brak recenzji do wyświetlenia.</p>
                 {% endfor %}
             </div>
         </div>
